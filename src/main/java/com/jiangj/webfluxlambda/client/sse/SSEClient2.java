@@ -14,6 +14,7 @@ import sun.nio.ch.ThreadPool;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 /**
  * @author Jiang Jian
@@ -31,14 +32,13 @@ public class SSEClient2 {
 
         ThreadFactory nameThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
 
-        ExecutorService pool = new ThreadPoolExecutor(5, 200,
+        ExecutorService pool = new ThreadPoolExecutor(20, 100,
                 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(1024), nameThreadFactory,
                 new ThreadPoolExecutor.AbortPolicy());
 
-
-        for (int i = 0; i < 1000; i--) {
+        for (int i = 0 ; i < 1000 ; i++){
             pool.execute(() -> {
-                WebClient client = WebClient.create("http://127.0.0.1:8082/queryByRecordId?recordId=" + new Random().nextLong());
+                WebClient client = WebClient.create("http://101.37.119.210/issp/sse/order?uniCode=66");
                 client.get()
                         .uri("")
                         .accept(MediaType.TEXT_EVENT_STREAM)
